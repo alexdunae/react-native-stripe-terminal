@@ -268,8 +268,13 @@ RCT_EXPORT_METHOD(createPayment:(NSDictionary *)options) {
     } else {
         NSInteger amount = [RCTConvert NSInteger:options[@"amount"]];
         NSString *currency = [RCTConvert NSString:options[@"currency"]];
+        NSArray *paymentMethodTypes = [RCTConvert NSStringArray:options[@"paymentMethodTypes"]];
 
-        SCPPaymentIntentParameters *params = [[SCPPaymentIntentParameters alloc] initWithAmount:amount currency:currency];
+        if (paymentMethodTypes == nil || [paymentMethodTypes count] == 0) {
+            paymentMethodTypes = [[NSArray alloc] initWithObjects:@"card_present", nil];
+        }
+
+        SCPPaymentIntentParameters *params = [[SCPPaymentIntentParameters alloc] initWithAmount:amount currency:currency paymentMethodTypes:paymentMethodTypes];
 
         params.metadata = options[@"metadata"];
         params.stripeDescription = options[@"description"];
