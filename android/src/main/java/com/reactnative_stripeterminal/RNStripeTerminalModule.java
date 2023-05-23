@@ -22,6 +22,7 @@ import com.stripe.stripeterminal.external.callable.ReaderCallback;
 import com.stripe.stripeterminal.external.callable.BluetoothReaderListener;
 import com.stripe.stripeterminal.external.callable.ReaderSoftwareUpdateCallback;
 import com.stripe.stripeterminal.external.callable.TerminalListener;
+import com.stripe.stripeterminal.external.models.PaymentMethodType;
 import com.stripe.stripeterminal.external.models.SimulateReaderUpdate;
 import com.stripe.stripeterminal.external.models.SimulatedCard;
 import com.stripe.stripeterminal.external.models.SimulatedCardType;
@@ -51,6 +52,7 @@ import java.sql.Wrapper;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -407,7 +409,11 @@ public class RNStripeTerminalModule extends ReactContextBaseJavaModule implement
     }
 
     private PaymentIntentParameters.Builder getPaymentParams(ReadableMap options) {
-        PaymentIntentParameters.Builder paymentIntentParamBuilder = new PaymentIntentParameters.Builder();
+        List<PaymentMethodType> paymentMethodTypes = new ArrayList<>();
+        paymentMethodTypes.add(PaymentMethodType.CARD_PRESENT);
+        paymentMethodTypes.add(PaymentMethodType.INTERAC_PRESENT);
+
+        PaymentIntentParameters.Builder paymentIntentParamBuilder = new PaymentIntentParameters.Builder(paymentMethodTypes);
         if (options != null) {
             if (options.hasKey(AMOUNT)) {
                 paymentIntentParamBuilder.setAmount(options.getInt(AMOUNT));
