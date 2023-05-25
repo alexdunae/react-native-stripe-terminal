@@ -141,6 +141,10 @@ class StripeTerminal {
     }
   }
 
+  clearCachedCredentials() {
+    return RNStripeTerminal.clearCachedCredentials();
+  }
+
   setSimulatorConfiguration(updateType, cardNumber, cardType) {
     if (Platform.OS === "android") {
       return RNStripeTerminal.setSimulatorConfiguration(
